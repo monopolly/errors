@@ -1,6 +1,7 @@
 package errors
 
 import (
+	"encoding/base64"
 	"fmt"
 	"math/rand"
 	"path/filepath"
@@ -59,6 +60,11 @@ func (a E) Error() string {
 	return string(a)
 }
 
+//Error system
+func (a E) Err() error {
+	return fmt.Errorf(string(a))
+}
+
 //SetCodeLine set point in code
 func (a *E) SetCodeLine() {
 	function, file, line, _ := runtime.Caller(1)
@@ -80,6 +86,11 @@ func (a *E) Ref(v ...string) (res string) {
 	return
 }
 
+//Ref set or get value
+func (a *E) Nil() (res bool) {
+	return len(*a) == 0
+}
+
 //Go set go link
 func (a *E) Go(v ...string) (res string) {
 	if v == nil {
@@ -87,4 +98,12 @@ func (a *E) Go(v ...string) (res string) {
 	}
 	a.Set("go", v[0])
 	return
+}
+
+func (a *E) Base64() (res string) {
+	return base64.StdEncoding.WithPadding(base64.NoPadding).EncodeToString(*a)
+}
+
+func ParseBase64(b string) (res E, err error) {
+	return base64.StdEncoding.WithPadding(base64.NoPadding).DecodeString(b)
 }

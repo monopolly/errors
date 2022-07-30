@@ -15,6 +15,7 @@ func TestRef(t *testing.T) {
 
 	r.SetRef()
 	fmt.Println(string(r))
+
 }
 
 func BenchmarkPreErr(b *testing.B) {
