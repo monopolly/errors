@@ -47,26 +47,26 @@ const (
 
 */
 
-//E is a struct
+// E is a struct
 type E []byte
 
-//Set value
+// Set value
 func (a *E) Set(k string, v interface{}) *E {
 	(*a) = jsons.Set((*a), k, v)
 	return a
 }
 
-//Get value
+// Get value
 func (a *E) Get(k string) jsons.Result {
 	return jsons.Get((*a), k)
 }
 
-//Get value
+// Get value
 func (a *E) Bytes() []byte {
 	return []byte((*a))
 }
 
-//ID set or get value
+// ID set or get value
 func (a *E) ID(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eID)
@@ -75,7 +75,7 @@ func (a *E) ID(v ...string) (res string) {
 	return
 }
 
-//Code set or get value
+// Code set or get value
 func (a *E) Code(v ...int) (res int) {
 	if v == nil {
 		return jsons.Int((*a), eCode)
@@ -84,7 +84,7 @@ func (a *E) Code(v ...int) (res int) {
 	return
 }
 
-//App set or get value
+// App set or get value
 func (a *E) App(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eApp)
@@ -93,7 +93,7 @@ func (a *E) App(v ...string) (res string) {
 	return
 }
 
-//Ver set or get value
+// Ver set or get value
 func (a *E) Ver(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eVersion)
@@ -102,7 +102,7 @@ func (a *E) Ver(v ...string) (res string) {
 	return
 }
 
-//Comment set or get value
+// Comment set or get value
 func (a *E) Comment(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eComment)
@@ -111,7 +111,7 @@ func (a *E) Comment(v ...string) (res string) {
 	return
 }
 
-//Time set or get value
+// Time set or get value
 func (a *E) Time(v ...int64) (res int64) {
 	if v == nil {
 		return jsons.Int64((*a), eTime)
@@ -120,12 +120,12 @@ func (a *E) Time(v ...int64) (res int64) {
 	return
 }
 
-//TimeTime get value as time
+// TimeTime get value as time
 func (a *E) TimeTime() (res time.Time) {
 	return time.Unix(a.Time(), 0)
 }
 
-//Trace set or get value
+// Trace set or get value
 func (a *E) Trace(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eTrace)
@@ -134,7 +134,7 @@ func (a *E) Trace(v ...string) (res string) {
 	return
 }
 
-//IP set or get value
+// IP set or get value
 func (a *E) IP(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eIP)
@@ -143,7 +143,7 @@ func (a *E) IP(v ...string) (res string) {
 	return
 }
 
-//Useragent set or get value
+// Useragent set or get value
 func (a *E) Useragent(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eUseragent)
@@ -152,7 +152,7 @@ func (a *E) Useragent(v ...string) (res string) {
 	return
 }
 
-//OS set or get value
+// OS set or get value
 func (a *E) OS(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eOS)
@@ -161,7 +161,7 @@ func (a *E) OS(v ...string) (res string) {
 	return
 }
 
-//Device set or get value
+// Device set or get value
 func (a *E) Device(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eDevice)
@@ -170,7 +170,7 @@ func (a *E) Device(v ...string) (res string) {
 	return
 }
 
-//Message set public message
+// Message set public message
 func (a *E) Message(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eMessage)
@@ -179,7 +179,7 @@ func (a *E) Message(v ...string) (res string) {
 	return
 }
 
-//Fix set or get value
+// Fix set or get value
 func (a *E) Fix(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eFix)
@@ -188,7 +188,7 @@ func (a *E) Fix(v ...string) (res string) {
 	return
 }
 
-//User set or get value
+// User set or get value
 func (a *E) User(v ...int) (res int) {
 	if v == nil {
 		return jsons.Int((*a), eUser)
