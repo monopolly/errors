@@ -19,19 +19,20 @@ var (
 	App   = "" //app add automatic if has
 )
 
-//New error
+// New error
 func New(code int, id string, comment ...interface{}) (a E) {
 	app := fmt.Sprintf(`"app":"%s"`, App)
 	switch len(comment) > 0 {
 	case true:
-		return []byte(fmt.Sprintf(`{%s,"code":%d,"id":"%s","time":%d,"c":"%v"}`, app, code, id, time.Now().Unix(), comment[0]))
+		return []byte(fmt.Sprintf(`{%s,"code":%d,"id":"%s","time":%d,"c":"%v"}`, app, code, id, time.Now().Unix(), jsonEscape(fmt.Sprint(comment[0]))))
 	case false:
 		return []byte(fmt.Sprintf(`{%s,"code":%d,"id":"%s","time":%d}`, app, code, id, time.Now().Unix()))
 	}
+
 	return
 }
 
-//hashids[user, unix] || random
+// hashids[user, unix] || random
 func (a *E) SetRef(userID ...int) {
 	var h string
 	switch userID {
@@ -49,35 +50,35 @@ func (a *E) SetRef(userID ...int) {
 	a.Ref(h)
 }
 
-//SetRef ID
+// SetRef ID
 func (a *E) R() {
 	h, _ := hh.Encode([]int{int(time.Now().Unix()), rand.Intn(99), rand.Intn(99), rand.Intn(999)})
 	a.Ref(h)
 }
 
-//Error system
+// Error system
 func (a E) Error() string {
 	return string(a)
 }
 
-//Error system
+// Error system
 func (a E) Err() error {
 	return fmt.Errorf(string(a))
 }
 
-//SetCodeLine set point in code
+// SetCodeLine set point in code
 func (a *E) SetCodeLine() {
 	function, file, line, _ := runtime.Caller(1)
 	_, file = filepath.Split(file)
 	a.Set(eSource, fmt.Sprintf("%s %s:%d", runtime.FuncForPC(function).Name(), file, line))
 }
 
-//CodeLine set or get value
+// CodeLine set or get value
 func (a *E) CodeLine() (res string) {
 	return jsons.String((*a), eSource)
 }
 
-//Ref set or get value
+// Ref set or get value
 func (a *E) Ref(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eRef)
@@ -86,12 +87,12 @@ func (a *E) Ref(v ...string) (res string) {
 	return
 }
 
-//Ref set or get value
+// Ref set or get value
 func (a *E) Nil() (res bool) {
 	return len(*a) == 0
 }
 
-//Go set go link
+// Go set go link
 func (a *E) Go(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), "go")
