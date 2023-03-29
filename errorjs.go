@@ -33,6 +33,7 @@ const (
 	eUseragent = "ua"      // string user agent
 	eOS        = "os"      // string
 	eDevice    = "device"  // string
+	eExplain   = "explain" // string
 	eMessage   = "message" // string for public message: Sorry, server is not available
 	eFix       = "fix"     // string how to fix it: restart server
 	eUser      = "uid"     // int
@@ -90,6 +91,15 @@ func (a *E) App(v ...string) (res string) {
 		return jsons.String((*a), eApp)
 	}
 	a.Set(eApp, v[0])
+	return
+}
+
+// App set or get value
+func (a *E) Explain(v ...string) (res string) {
+	if v == nil {
+		return jsons.String((*a), eExplain)
+	}
+	a.Set(eExplain, v[0])
 	return
 }
 
