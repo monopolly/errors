@@ -23,7 +23,6 @@ const (
 	eID        = "id"      // string
 	eCode      = "code"    // int
 	eApp       = "app"     // string
-	eVersion   = "ver"     // string
 	eComment   = "c"       // string
 	eTime      = "time"    // int64 time
 	eSource    = "at"      // string
@@ -37,16 +36,8 @@ const (
 	eMessage   = "message" // string for public message: Sorry, server is not available
 	eFix       = "fix"     // string how to fix it: restart server
 	eUser      = "uid"     // int
+	eLevel     = "l"       // int
 )
-
-/*
-
-	//New create struct
-	func New() E {
-		return []byte("{}")
-	}
-
-*/
 
 // E is a struct
 type E []byte
@@ -103,15 +94,6 @@ func (a *E) Explain(v ...string) (res string) {
 	return
 }
 
-// Ver set or get value
-func (a *E) Ver(v ...string) (res string) {
-	if v == nil {
-		return jsons.String((*a), eVersion)
-	}
-	a.Set(eVersion, v[0])
-	return
-}
-
 // Comment set or get value
 func (a *E) Comment(v ...string) (res string) {
 	if v == nil {
@@ -140,7 +122,7 @@ func (a *E) Trace(v ...string) (res string) {
 	if v == nil {
 		return jsons.String((*a), eTrace)
 	}
-	a.Set(eTrace, v[0])
+	(*a) = jsons.ArrayStringAppend((*a), eTrace, v[0])
 	return
 }
 
@@ -204,5 +186,14 @@ func (a *E) User(v ...int) (res int) {
 		return jsons.Int((*a), eUser)
 	}
 	a.Set(eUser, v[0])
+	return
+}
+
+// User set or get value
+func (a *E) Level(v ...int) (res int) {
+	if v == nil {
+		return jsons.Int((*a), eLevel)
+	}
+	a.Set(eLevel, v[0])
 	return
 }

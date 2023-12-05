@@ -9,51 +9,26 @@ import (
 	"time"
 
 	"github.com/monopolly/jsons"
-	"github.com/speps/go-hashids"
+	"github.com/rs/xid"
 )
 
 var (
-	lower = "0123456789qwertyuiopasdfghjklzxcvbnm"
-	upper = "0123456789QWERTYUIOPASDFGHJKLZXCVBNM"
-	hh, _ = hashids.NewWithData(&hashids.HashIDData{Alphabet: lower})
-	App   = "" //app add automatic if has
+	// lower = "0123456789qwertyuiopasdfghjklzxcvbnm"
+	// upper = "0123456789QWERTYUIOPASDFGHJKLZXCVBNM"
+	// hh, _ = hashids.NewWithData(&hashids.HashIDData{Alphabet: lower})
+	guid = xid.New()
 )
 
 // New error
 func New(code int, id string, comment ...interface{}) (a E) {
-	app := fmt.Sprintf(`"app":"%s"`, App)
+
 	switch len(comment) > 0 {
 	case true:
-		return []byte(fmt.Sprintf(`{%s,"code":%d,"id":"%s","time":%d,"c":"%v"}`, app, code, id, time.Now().Unix(), jsonEscape(fmt.Sprint(comment[0]))))
+		return []byte(fmt.Sprintf(`{"code":%d,"id":"%s","time":%d,"c":"%v","ref":"%s%d"}`, code, id, time.Now().Unix(), jsonEscape(fmt.Sprint(comment[0])), guid.String(), rand.Intn(1000)))
 	case false:
-		return []byte(fmt.Sprintf(`{%s,"code":%d,"id":"%s","time":%d}`, app, code, id, time.Now().Unix()))
+		return []byte(fmt.Sprintf(`{"code":%d,"id":"%s","time":%d,"ref":"%s%d"}`, code, id, time.Now().Unix(), guid.String(), rand.Intn(1000)))
 	}
-
 	return
-}
-
-// hashids[user, unix] || random
-func (a *E) SetRef(userID ...int) {
-	var h string
-	switch userID {
-	case nil:
-		h, _ = hh.Encode([]int{
-			int(time.Now().Unix()),
-			rand.Intn(99),
-			rand.Intn(99),
-			rand.Intn(999),
-		})
-	default:
-		h, _ = hh.Encode([]int{userID[0], int(time.Now().Unix())})
-	}
-
-	a.Ref(h)
-}
-
-// SetRef ID
-func (a *E) R() {
-	h, _ := hh.Encode([]int{int(time.Now().Unix()), rand.Intn(99), rand.Intn(99), rand.Intn(999)})
-	a.Ref(h)
 }
 
 // Error system
@@ -61,20 +36,15 @@ func (a E) Error() string {
 	return string(a)
 }
 
-// Error system
-func (a E) Err() error {
-	return fmt.Errorf(string(a))
-}
-
-// SetCodeLine set point in code
-func (a *E) SetCodeLine() {
+// github.com/monopolly/errors.TestRef errors_test.go:25
+func (a *E) Point() {
 	function, file, line, _ := runtime.Caller(1)
 	_, file = filepath.Split(file)
 	a.Set(eSource, fmt.Sprintf("%s %s:%d", runtime.FuncForPC(function).Name(), file, line))
 }
 
-// CodeLine set or get value
-func (a *E) CodeLine() (res string) {
+// github.com/monopolly/errors.TestRef errors_test.go:25
+func (a *E) Line() string {
 	return jsons.String((*a), eSource)
 }
 

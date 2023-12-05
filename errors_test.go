@@ -4,16 +4,32 @@ import (
 	"errors"
 	"fmt"
 	"testing"
+	"time"
 )
+
+func TestTrace(t *testing.T) {
+
+	fmt.Println(errors.Unwrap(Access()))
+
+	fmt.Println("Trace")
+	r := Access()
+	r.Trace("one")
+	r.Trace("two")
+	r.Trace("three")
+
+	fmt.Println(string(r))
+
+	for i := 0; i < 10; i++ {
+		time.Sleep(time.Microsecond * 3)
+		fmt.Println(Access())
+	}
+
+}
 
 func TestRef(t *testing.T) {
 	r := Access("comment1", "comment 2")
-	r.SetRef()
-	r.SetCodeLine()
+	r.Point()
 	r.Message("a.me")
-	fmt.Println(string(r))
-
-	r.SetRef()
 	fmt.Println(string(r))
 
 }
