@@ -31,11 +31,6 @@ func New(code int, id string, comment ...interface{}) (a E) {
 	return
 }
 
-// Error system
-func (a E) Error() string {
-	return string(a)
-}
-
 // github.com/monopolly/errors.TestRef errors_test.go:25
 func (a *E) Point() {
 	function, file, line, _ := runtime.Caller(1)
@@ -73,6 +68,9 @@ func (a *E) Go(v ...string) (res string) {
 
 func (a *E) Base64() (res string) {
 	return base64.StdEncoding.WithPadding(base64.NoPadding).EncodeToString(*a)
+}
+func (a E) String() string {
+	return string(a)
 }
 
 func ParseBase64(b string) (res E, err error) {

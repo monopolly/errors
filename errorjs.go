@@ -36,11 +36,16 @@ const (
 	eMessage   = "message" // string for public message: Sorry, server is not available
 	eFix       = "fix"     // string how to fix it: restart server
 	eUser      = "uid"     // int
-	eLevel     = "l"       // int
+	eLevel     = "level"   // int
 )
 
 // E is a struct
 type E []byte
+
+// error interface
+func (a E) Error() string {
+	return string(a)
+}
 
 // Set value
 func (a *E) Set(k string, v interface{}) *E {
@@ -196,4 +201,8 @@ func (a *E) Level(v ...int) (res int) {
 	}
 	a.Set(eLevel, v[0])
 	return
+}
+
+func (a *E) Map() (res map[string]any) {
+	return jsons.MapInterface(*a)
 }
