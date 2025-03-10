@@ -69,3 +69,4 @@ func Update(c ...interface{}) E          { return New(400, IDUpdate, c...) }
 func Verify(c ...interface{}) E          { return New(401, IDVerify, c...) }
 func Websocket(c ...interface{}) E       { return New(500, IDWebsocket, c...) }
 func Overflow(c ...interface{}) E        { return New(500, IDOverflow, c...) }
+func Unavailable(c ...interface{}) E     { return New(500, IDUnavailable, c...) }

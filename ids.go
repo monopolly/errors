@@ -70,4 +70,5 @@ const (
 	IDVerify          = "verify"
 	IDWebsocket       = "websocket"
 	IDOverflow        = "overflow"
+	IDUnavailable     = "unavailable"
 )
