@@ -2,8 +2,6 @@ package errors
 
 import (
 	ee "errors"
-	"fmt"
-	"runtime"
 	"strings"
 
 	"github.com/jackc/pgconn"
@@ -14,8 +12,6 @@ import (
 // pgx error converter
 func PGX(er error) (err E) {
 
-	pc, filename, line, _ := runtime.Caller(1)
-	defer err.Set("source", fmt.Sprintf("%s[%s:%d] %v", runtime.FuncForPC(pc).Name(), filename, line, err))
 	e := er.Error()
 	switch er {
 	case pgx.ErrNoRows:

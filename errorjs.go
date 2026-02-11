@@ -14,6 +14,7 @@ package errors
 	= new json name ex: =money.count or =company.report.name
 */
 import (
+	"fmt"
 	"time"
 
 	"github.com/monopolly/jsons"
@@ -21,11 +22,11 @@ import (
 
 const (
 	eID        = "id"      // string
+	eUID       = "uid"     // string
 	eCode      = "code"    // int
 	eApp       = "app"     // string
 	eComment   = "c"       // string
 	eTime      = "time"    // int64 time
-	eSource    = "at"      // string
 	eRef       = "ref"     // string
 	eTrace     = "trace"   // string duration
 	eIP        = "ip"      // string
@@ -37,6 +38,10 @@ const (
 	eFix       = "fix"     // string how to fix it: restart server
 	eUser      = "uid"     // int
 	eLevel     = "level"   // int
+
+	ePoint    = "point"
+	ePackage  = "pkg"
+	eFunction = "func"
 )
 
 // E is a struct
@@ -47,8 +52,13 @@ func (a E) Error() string {
 	return string(a)
 }
 
+// error interface
+func (a *E) LogString() string {
+	return fmt.Sprintf("%d %s %s %s", a.Code(), a.ID(), a.Comment(), a.Point())
+}
+
 // Set value
-func (a *E) Set(k string, v interface{}) *E {
+func (a *E) Set(k string, v any) *E {
 	(*a) = jsons.Set((*a), k, v)
 	return a
 }
@@ -69,6 +79,15 @@ func (a *E) ID(v ...string) (res string) {
 		return jsons.String((*a), eID)
 	}
 	a.Set(eID, v[0])
+	return
+}
+
+// ID set or get value
+func (a *E) UID(v ...int) (res int) {
+	if v == nil {
+		return jsons.Int((*a), eUID)
+	}
+	a.Set(eUID, v[0])
 	return
 }
 
@@ -185,14 +204,14 @@ func (a *E) Fix(v ...string) (res string) {
 	return
 }
 
-// User set or get value
-func (a *E) User(v ...int) (res int) {
-	if v == nil {
-		return jsons.Int((*a), eUser)
-	}
-	a.Set(eUser, v[0])
-	return
-}
+// // User set or get value
+// func (a *E) UID(v ...int) (res int) {
+// 	if v == nil {
+// 		return jsons.Int((*a), eUser)
+// 	}
+// 	a.Set(eUser, v[0])
+// 	return
+// }
 
 // User set or get value
 func (a *E) Level(v ...int) (res int) {

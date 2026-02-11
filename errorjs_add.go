@@ -3,44 +3,39 @@ package errors
 import (
 	"encoding/base64"
 	"fmt"
-	"math/rand"
-	"path/filepath"
-	"runtime"
+	"strings"
 	"time"
 
 	"github.com/monopolly/jsons"
-	"github.com/rs/xid"
+	"github.com/sqids/sqids-go"
 )
 
 var (
 	// lower = "0123456789qwertyuiopasdfghjklzxcvbnm"
 	// upper = "0123456789QWERTYUIOPASDFGHJKLZXCVBNM"
-	// hh, _ = hashids.NewWithData(&hashids.HashIDData{Alphabet: lower})
-	guid = xid.New()
+	// hh, _ =  hashids.NewWithData(&hashids.HashIDData{Alphabet: lower})
+	// guid  = xid.New()
+
+	sids, _ = sqids.New(sqids.Options{Alphabet: "0123456789qwertyuiopasdfghjklzxcvbnm"})
+	ref     = func(code int) (res string) {
+		res, _ = sids.Encode([]uint64{uint64(code), uint64(time.Now().UnixMicro())})
+		return
+	}
 )
 
 // New error
-func New(code int, id string, comment ...interface{}) (a E) {
-
-	switch len(comment) > 0 {
-	case true:
-		return []byte(fmt.Sprintf(`{"code":%d,"id":"%s","time":%d,"c":"%v","ref":"%s%d"}`, code, id, time.Now().Unix(), jsonEscape(fmt.Sprint(comment[0])), guid.String(), rand.Intn(1000)))
-	case false:
-		return []byte(fmt.Sprintf(`{"code":%d,"id":"%s","time":%d,"ref":"%s%d"}`, code, id, time.Now().Unix(), guid.String(), rand.Intn(1000)))
+func New(code int, id string, c ...any) (res E) {
+	p := Error{
+		Code: code,
+		ID:   id,
+		Ref:  ref(code), //.fmt.Sprintf("%d%d", code, time.Now().UnixMicro()), // uuid.NewString(),
 	}
+	if c != nil {
+		p.Comment = fmt.Sprint(c...)
+	}
+	res = p.Pack()
+	res.BreakpointLight(3)
 	return
-}
-
-// github.com/monopolly/errors.TestRef errors_test.go:25
-func (a *E) Point() {
-	function, file, line, _ := runtime.Caller(1)
-	_, file = filepath.Split(file)
-	a.Set(eSource, fmt.Sprintf("%s %s:%d", runtime.FuncForPC(function).Name(), file, line))
-}
-
-// github.com/monopolly/errors.TestRef errors_test.go:25
-func (a *E) Line() string {
-	return jsons.String((*a), eSource)
 }
 
 // Ref set or get value
@@ -69,8 +64,16 @@ func (a *E) Go(v ...string) (res string) {
 func (a *E) Base64() (res string) {
 	return base64.StdEncoding.WithPadding(base64.NoPadding).EncodeToString(*a)
 }
+
 func (a E) String() string {
 	return string(a)
+}
+
+func (a *E) TelegramString() (res string) {
+	var list []string
+	list = append(list, fmt.Sprint(a.Code()), ":", a.ID())
+	list = append(list, a.Comment())
+	return strings.Join(list, "\n")
 }
 
 func ParseBase64(b string) (res E, err error) {

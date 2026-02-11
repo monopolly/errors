@@ -19,7 +19,7 @@ func TestTrace(t *testing.T) {
 
 	fmt.Println(string(r))
 
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		time.Sleep(time.Microsecond * 3)
 		fmt.Println(Access())
 	}

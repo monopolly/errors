@@ -43,6 +43,7 @@ const (
 	IDLong            = "long"
 	IDMarshal         = "marshal"
 	IDMethod          = "method"
+	IDMemory          = "memory"
 	IDNotExist        = "notexist"
 	IDNotFound        = "notfound"
 	IDOpen            = "open"
