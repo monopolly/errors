@@ -17,6 +17,7 @@ import (
 	"fmt"
 	"time"
 
+	jsoniter "github.com/json-iterator/go"
 	"github.com/monopolly/jsons"
 )
 
@@ -55,6 +56,12 @@ func (a E) Error() string {
 // error interface
 func (a *E) LogString() string {
 	return fmt.Sprintf("%d %s %s %s", a.Code(), a.ID(), a.Comment(), a.Point())
+}
+
+// error interface
+func (a *E) Struct() (res Error) {
+	jsoniter.Unmarshal(*a, &res)
+	return
 }
 
 // Set value

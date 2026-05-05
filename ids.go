@@ -72,4 +72,5 @@ const (
 	IDWebsocket       = "websocket"
 	IDOverflow        = "overflow"
 	IDUnavailable     = "unavailable"
+	IDPanic           = "panic"
 )

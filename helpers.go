@@ -70,3 +70,4 @@ func Update(c ...any) E          { return New(400, IDUpdate, c...) }
 func Valid(c ...any) E           { return New(400, IDValid, c...) }
 func Verify(c ...any) E          { return New(401, IDVerify, c...) }
 func Websocket(c ...any) E       { return New(500, IDWebsocket, c...) }
+func Panic(c ...any) E           { return New(500, IDPanic, c...) }
