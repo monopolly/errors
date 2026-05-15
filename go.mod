@@ -9,6 +9,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/json-iterator/go v1.1.12
 	github.com/monopolly/jsons v0.0.0-20250218032154-4eb18f47c656
+	github.com/sashabaranov/go-openai v1.41.2
 	github.com/sqids/sqids-go v0.4.1
 )
 
